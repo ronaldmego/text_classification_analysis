@@ -1,0 +1,46 @@
+# Entorno virtual
+venv/
+env/
+.env
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Archivos de distribución/building
+dist/
+build/
+*.egg-info/
+
+# Archivos de logs
+*.log
+sentiment_analysis.log
+
+# Directorios de datos y outputs
+data/
+outputs/
+
+# Archivos de IDE/editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Archivos de ambiente
+.env
+.env.local
+
+# Archivos temporales de Streamlit
+.streamlit/secrets.toml

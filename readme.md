@@ -85,7 +85,10 @@ Los resultados se guardan en:
 
 ## Imagenes
 
-![demo](/assets/images/llm-classifier.gif.png)
+![demo](/assets/images/llm-classifier.gif)
+
 ![demo](/assets/images/image1.png)
+
 ![demo](/assets/images/image2.png)
+
 ![demo](/assets/images/image3.png)

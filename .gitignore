@@ -22,6 +22,8 @@ sentiment_analysis.log
 # Directorios de datos y outputs
 data/
 outputs/
+test/
+project_to_markdown_output/
 
 # Archivos de IDE/editores
 .vscode/

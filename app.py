@@ -54,12 +54,9 @@ def main():
         }
         limit = limit_map[analysis_type]
 
-        # Tamaño del batch
-        batch_size = st.slider("Tamaño del batch", min_value=10, max_value=100, value=50, step=10)
-
         if st.button("🚀 Iniciar Análisis", type="primary"):
             # Inicializar el analizador
-            analyzer = SentimentAnalyzer(batch_size=batch_size)
+            analyzer = SentimentAnalyzer()
             
             # Contenedores para la visualización en tiempo real
             progress_container = st.empty()
@@ -80,47 +77,43 @@ def main():
             neutral_metric = col2.metric("Neutros", 0)
             negative_metric = col3.metric("Negativos", 0)
 
-            # Procesar por lotes
+            # Procesar títulos
             df_to_process = df.head(limit) if limit else df
             
-            for start_idx in range(0, len(df_to_process), batch_size):
-                end_idx = min(start_idx + batch_size, len(df_to_process))
-                batch = df_to_process.iloc[start_idx:end_idx]
+            for _, row in df_to_process.iterrows():
+                # Tomar el texto de la primera columna
+                text = row.iloc[0]
+                sentiment_code, sentiment = analyzer.analyze_sentiment(text)
                 
-                for _, row in batch.iterrows():
-                    # Tomar el texto de la primera columna
-                    text = row.iloc[0]
-                    sentiment_code, sentiment = analyzer.analyze_sentiment(text)
-                    
-                    results.append({
-                        'text': text,
-                        'sentiment_code': sentiment_code,
-                        'sentiment': sentiment
-                    })
-                    
-                    processed += 1
-                    
-                    # Actualizar progreso y métricas
-                    progress = processed / total_to_process
-                    progress_bar.progress(progress)
-                    
-                    # Actualizar métricas
-                    current_results = pd.DataFrame(results)
-                    if not current_results.empty:
-                        sentiment_counts = current_results['sentiment'].value_counts()
-                        positive_metric.metric("Positivos", sentiment_counts.get('POSITIVE', 0))
-                        neutral_metric.metric("Neutros", sentiment_counts.get('NEUTRAL', 0))
-                        negative_metric.metric("Negativos", sentiment_counts.get('NEGATIVE', 0))
-                    
-                    # Actualizar información de progreso
-                    elapsed_time = (datetime.now() - start_time).total_seconds()
-                    rate = processed / elapsed_time if elapsed_time > 0 else 0
-                    
-                    progress_container.info(
-                        f"⏳ Progreso: {processed:,}/{total_to_process:,} títulos "
-                        f"({progress:.1%}) | "
-                        f"Velocidad: {rate:.1f} títulos/segundo"
-                    )
+                results.append({
+                    'text': text,
+                    'sentiment_code': sentiment_code,
+                    'sentiment': sentiment
+                })
+                
+                processed += 1
+                
+                # Actualizar progreso y métricas
+                progress = processed / total_to_process
+                progress_bar.progress(progress)
+                
+                # Actualizar métricas
+                current_results = pd.DataFrame(results)
+                if not current_results.empty:
+                    sentiment_counts = current_results['sentiment'].value_counts()
+                    positive_metric.metric("Positivos", sentiment_counts.get('POSITIVE', 0))
+                    neutral_metric.metric("Neutros", sentiment_counts.get('NEUTRAL', 0))
+                    negative_metric.metric("Negativos", sentiment_counts.get('NEGATIVE', 0))
+                
+                # Actualizar información de progreso
+                elapsed_time = (datetime.now() - start_time).total_seconds()
+                rate = processed / elapsed_time if elapsed_time > 0 else 0
+                
+                progress_container.info(
+                    f"⏳ Progreso: {processed:,}/{total_to_process:,} títulos "
+                    f"({progress:.1%}) | "
+                    f"Velocidad: {rate:.1f} títulos/segundo"
+                )
 
             # Crear DataFrame con resultados
             results_df = pd.DataFrame(results)

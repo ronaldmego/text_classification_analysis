@@ -13,7 +13,7 @@ Sistema de análisis de sentimientos para títulos de noticias utilizando modelo
 
 ## 📋 Prerequisitos
 
-- Python 3.8+
+- Python 3.11+
 - [Ollama](https://ollama.ai/) instalado y corriendo localmente
 - Modelo phi4 descargado en Ollama (u otro modelo compatible)
 
@@ -82,3 +82,10 @@ Los resultados se guardan en:
 - CSV en la carpeta `outputs/` con timestamp
 - Visualizaciones en tiempo real en la interface
 - Logs detallados en `sentiment_analysis.log`
+
+## Imagenes
+
+![demo](/assets/images/llm-classifier.gif.png)
+![demo](/assets/images/image1.png)
+![demo](/assets/images/image2.png)
+![demo](/assets/images/image3.png)
